@@ -1,7 +1,7 @@
 'use strict';
 
 var Gpio;
-if(!process.env.NODE_ENV == 'development'){
+if(process.env.NODE_ENV !== 'development'){
     Gpio = require('pigpio').Gpio;
 }else{
     Gpio = 
