@@ -2,12 +2,22 @@
 //load environment variables
 require('dotenv').load();
 
-const AutoLock = require('./application/auto-lock.js');
+const rl = require('readline').createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
 
+
+//Start
+const AutoLock = require('./application/auto-lock.js');
 const lock = new AutoLock(process.env.LOCK_GPIOPIN);
 
-lock.Lock();
+rl.on('line', msg => {
+    if(msg === 'l'){
+        lock.Lock();
+    }else if (msg === 'u'){
+        lock.Unlock();
+    }
+});
 
-setTimeout(() => {
-    lock.Unlock();    
-}, 1000);
+console.log('Homesec started');
