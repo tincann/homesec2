@@ -2,8 +2,9 @@
 //classes
 const AutoLock = require('./application/auto-lock.js');
 const LockDriver = require('./application/lock-driver.js');
+const Telegram = require('./application/telegram.js');
 
-//load environment variables
+//load environment variables from .env file
 require('dotenv').load();
 
 const rl = require('readline').createInterface({
@@ -11,10 +12,12 @@ const rl = require('readline').createInterface({
   output: process.stdout
 });
 
+var tg = new Telegram(process.env.BOT_TOKEN, process.env.CHAT_ID);
+
 //add loggers
 var logger = require('./application/logger.js');
 logger.addListener(console.log);
-
+logger.addListener(tg.log.bind(tg));
 
 //start
 const lock = new AutoLock(process.env.LOCK_GPIOPIN);

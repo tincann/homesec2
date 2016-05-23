@@ -17,7 +17,7 @@
   "homepage": "https://github.com/tincann/homesec2",
   "dependencies": {
     "dotenv": "^2.0.0",
-    "pigpio": "^0.3.4"
-
+    "pigpio": "^0.3.4",
+    "telegraf": "^0.9.5"
   }
 }
