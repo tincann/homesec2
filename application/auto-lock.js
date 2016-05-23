@@ -1,4 +1,5 @@
 'use strict';
+var log = require('./logger.js').create('AUTO LOCK');
 
 var Gpio;
 if(process.env.NODE_ENV !== 'development'){
@@ -11,7 +12,7 @@ if(process.env.NODE_ENV !== 'development'){
             }
             
             servoWrite(pulseWidth) {
-                console.log(`[DebugMotor] pin: ${this.pin} pw: ${pulseWidth}`);
+                log.write(`##debug: pin: ${this.pin} pw: ${pulseWidth}`);
             }
         };
 }
@@ -25,13 +26,13 @@ class AutoLock {
     }   
    
     Lock(){
-        console.log('door locked');
-        this.motor.servoWrite(RIGHT);
+        log.write('locking');
+        this.motor.servoWrite(RIGHT);        
     }
     
     Unlock(){
-        console.log('door unlocked');
-        this.motor.servoWrite(LEFT);
+        log.write('unlocking');
+        this.motor.servoWrite(LEFT);        
     }
 }
 
