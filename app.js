@@ -23,6 +23,12 @@ logger.addListener(tg.log.bind(tg));
 const lock = new AutoLock(process.env.LOCK_GPIOPIN);
 const lockDriver = new LockDriver(lock);
 
+//register commands
+tg.registerCommand('arm', lockDriver.Arm.bind(lockDriver));
+tg.registerCommand('disarm', lockDriver.Disarm.bind(lockDriver));
+tg.registerCommand('lock', lockDriver.Lock.bind(lockDriver));
+tg.registerCommand('unlock', lockDriver.Unlock.bind(lockDriver));
+
 rl.on('line', msg => {
     if(msg === 'l'){
         lockDriver.Lock();
@@ -30,5 +36,8 @@ rl.on('line', msg => {
         lockDriver.Unlock();
     }
 });
+
+//start telegram polling
+tg.start();
 
 console.log('Homesec started');
