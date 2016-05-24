@@ -26,12 +26,12 @@ class AutoLock {
     }   
    
     Lock(){
-        log.write('locking');
+        log.write('Locking');
         this.motor.servoWrite(RIGHT);        
     }
     
     Unlock(){
-        log.write('unlocking');
+        log.write('Unlocking');
         this.motor.servoWrite(LEFT);        
     }
 }

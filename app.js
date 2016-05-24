@@ -1,21 +1,22 @@
 'use strict';
+//load environment variables from .env file
+require('dotenv').load();
+
 //classes
 const AutoLock = require('./application/auto-lock.js');
 const LockDriver = require('./application/lock-driver.js');
 const Telegram = require('./application/telegram.js');
-
-//load environment variables from .env file
-require('dotenv').load();
 
 const rl = require('readline').createInterface({
   input: process.stdin,
   output: process.stdout
 });
 
-var tg = new Telegram(process.env.BOT_TOKEN, process.env.CHAT_ID);
+const tg = new Telegram(process.env.BOT_TOKEN, process.env.CHAT_ID);
 
 //add loggers
-var logger = require('./application/logger.js');
+const logger = require('./application/logger.js');
+const log = logger.create('APP');
 logger.addListener(console.log);
 logger.addListener(tg.log.bind(tg));
 
@@ -40,4 +41,4 @@ rl.on('line', msg => {
 //start telegram polling
 tg.start();
 
-console.log('Homesec started');
+log.write('Homesec started');
