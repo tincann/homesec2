@@ -12,7 +12,7 @@ const rl = require('readline').createInterface({
   output: process.stdout
 });
 
-const tg = new Telegram(process.env.BOT_TOKEN, process.env.CHAT_ID);
+const tg = new Telegram(process.env.BOT_TOKEN, parseInt(process.env.CHAT_ID));
 
 //add loggers
 const logger = require('./application/logger.js');

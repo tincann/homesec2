@@ -14,8 +14,9 @@ class Telegram extends EventEmitter {
     }
     
     registerCommand(cmd, func){
+        const chatId = this.chatId;
         this.t.hears(`/${cmd}`, function * (){ 
-            if(this.chat && this.chat.id === this.chatId){
+            if(this.chat && this.chat.id === chatId){
                 func();
             }
         });
@@ -31,13 +32,11 @@ class Telegram extends EventEmitter {
     
     registerEvents(){        
         //for debugging purposes
+        const chatId = this.chatId;
         this.t.on('text', function * () {
-            
-           console.log(this.chat); 
-            if(this.chat && this.chat.id !== this.chatId){
-                return;
-            }
-           console.log(this.chat); 
+           if(this.chat && this.chat.id === chatId){
+                console.log(this.chat);
+            }           
         });
     }
 }
