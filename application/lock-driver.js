@@ -7,6 +7,8 @@ class LockDriver {
         this.sensor.on('close', this.onDoorClose.bind(this));
         this.sensor.on('open', this.onDoorOpen.bind(this));
         this.armed = false;
+        
+        this.lockTimeout = null;
     }
     
     Lock(){
@@ -35,14 +37,14 @@ class LockDriver {
     
     onDoorClose(){
         if(this.armed){
-            setTimeout(() => {
+            this.lockTimeout = setTimeout(() => {
                 this.Lock();
-            }, 1000);
+            }, 5000);
         }
     }
     
     onDoorOpen(){
-        
+        clearTimeout(this.lockTimeout);
     }
 }
 
