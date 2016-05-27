@@ -39,7 +39,7 @@ class LockDriver {
         if(this.armed){
             this.lockTimeout = setTimeout(() => {
                 this.Lock();
-            }, 5000);
+            }, 3000);
         }
     }
     
