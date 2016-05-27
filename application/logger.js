@@ -1,4 +1,4 @@
-const funcs = [];
+const subscriptions = [];
 
 class Logger{        
     constructor(name){
@@ -6,15 +6,20 @@ class Logger{
     }
         
     write(msg){
-        for(let f of funcs){
-            f(`${new Date()} [${this.name}] ${msg}`);
+        for(let s of subscriptions){
+            var prefix = "";
+            if(s.includeTimestamp){
+                prefix += new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''); 
+            }
+            prefix += ` [${this.name}] `
+            s.listener(prefix + msg);
         }
     }
 }
 
 module.exports = {
-    addListener(func){
-        funcs.push(func);
+    addListener(listener, includeTimestamp){
+        subscriptions.push({ listener, includeTimestamp });
     },
     
     create(name){

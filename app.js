@@ -18,8 +18,8 @@ const tg = new Telegram(process.env.BOT_TOKEN, process.env.CHAT_ID);
 //add loggers
 const logger = require('./application/logger.js');
 const log = logger.create('APP');
-logger.addListener(console.log);
-logger.addListener(tg.log.bind(tg));
+logger.addListener(console.log, true);
+logger.addListener(tg.log.bind(tg), false);
 
 //start
 const lock = new AutoLock(process.env.LOCK_GPIOPIN);
