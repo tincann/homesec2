@@ -34,8 +34,10 @@ class DoorSensor extends EventEmitter {
         this.timeout = setTimeout(() => {
             var level = this.sensor.digitalRead();
             if(level == 1){
+                log.write('Opened');
                 this.emit('open');
             }else{
+                log.write('Closed');
                 this.emit('close');
             }
             this.timeout = null;
