@@ -1,5 +1,5 @@
 'use strict';
-var log = require('./logger.js').create('AUTO LOCK');
+const log = require('./logger.js').create('AUTO LOCK');
 
 var Gpio;
 if(process.env.NODE_ENV !== 'development'){

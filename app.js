@@ -4,6 +4,7 @@ require('dotenv-safe').load();
 
 //classes
 const AutoLock = require('./application/auto-lock.js');
+const DoorSensor = require('./application/door-sensor.js');
 const LockDriver = require('./application/lock-driver.js');
 const Telegram = require('./application/telegram.js');
 
@@ -22,7 +23,8 @@ logger.addListener(tg.log.bind(tg));
 
 //start
 const lock = new AutoLock(process.env.LOCK_GPIOPIN);
-const lockDriver = new LockDriver(lock);
+const sensor = new DoorSensor(process.env.SENSOR_GPIOPIN);
+const lockDriver = new LockDriver(lock, sensor);
 
 //register commands
 tg.registerCommand('arm', lockDriver.Arm.bind(lockDriver));

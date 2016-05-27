@@ -1,8 +1,10 @@
-var log = require('./logger.js').create('LOCK DRIVER');
+const log = require('./logger.js').create('LOCK DRIVER');
 
 class LockDriver {
-    constructor(lock){
+    constructor(lock, sensor){
         this.lock = lock;
+        this.sensor = sensor;
+        this.sensor.on('close', this.onDoorClosed.bind(this));
         this.armed = false;
     }
     
@@ -24,6 +26,15 @@ class LockDriver {
     Disarm(){
         this.armed = false;
         log.write('Disarmed');
+    }
+    
+    onDoorClosed(){
+        if(this.armed){
+            setTimeout(() => {
+                this.Lock();
+                this.Disarm();    
+            }, 1000);
+        }
     }
 }
 
