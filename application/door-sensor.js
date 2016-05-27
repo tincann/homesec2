@@ -25,6 +25,7 @@ class DoorSensor extends EventEmitter {
                 edge: Gpio.EITHER_EDGE });
         this.sensor.on('interrupt', this.onInterrupt.bind(this));
         this.timeout = null;
+        this.state = this.sensor.digitalRead();
     }
     
     onInterrupt(){
@@ -32,14 +33,17 @@ class DoorSensor extends EventEmitter {
         if(this.timeout) { return; }
         
         this.timeout = setTimeout(() => {
-            var level = this.sensor.digitalRead();
-            if(level == 1){
+            var state = this.sensor.digitalRead();
+            if(state === this.state) { return; }
+            
+            if(state == 1){
                 log.write('Opened');
                 this.emit('open');
             }else{
                 log.write('Closed');
                 this.emit('close');
             }
+            this.state = state;
             this.timeout = null;
         }, 500);
     }
