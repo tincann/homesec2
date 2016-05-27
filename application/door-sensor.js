@@ -29,11 +29,16 @@ class DoorSensor extends EventEmitter {
     
     onInterrupt(){
         console.log("interrupt!");
-        if(timeout) { return; }
+        if(this.timeout) { return; }
         
         this.timeout = setTimeout(() => {
-            console.log(this.sensor.digitalRead());
-            clearTimeout(this.timeout);
+            var level = this.sensor.digitalRead();
+            if(level == 1){
+                this.emit('open');
+            }else{
+                this.emit('close');
+            }
+            this.timeout = null;
         }, 500);
     }
 }
