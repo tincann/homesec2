@@ -4,13 +4,17 @@ class LockDriver {
     constructor(lock, sensor){
         this.lock = lock;
         this.sensor = sensor;
-        this.sensor.on('close', this.onDoorClosed.bind(this));
+        this.sensor.on('close', this.onDoorClose.bind(this));
+        this.sensor.on('open', this.onDoorOpen.bind(this));
         this.armed = false;
     }
     
     Lock(){
         this.lock.Lock();
         log.write('Locked');
+        if(this.armed){
+            this.Disarm();
+        }
     }
     
     Unlock(){
@@ -18,6 +22,7 @@ class LockDriver {
         log.write('Unlocked');
     }
     
+    //auto lock when door is closed
     Arm(){
         this.armed = true;
         log.write('Armed');
@@ -28,13 +33,16 @@ class LockDriver {
         log.write('Disarmed');
     }
     
-    onDoorClosed(){
+    onDoorClose(){
         if(this.armed){
             setTimeout(() => {
                 this.Lock();
-                this.Disarm();    
             }, 1000);
         }
+    }
+    
+    onDoorOpen(){
+        
     }
 }
 
