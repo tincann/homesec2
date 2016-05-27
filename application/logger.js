@@ -7,7 +7,7 @@ class Logger{
         
     write(msg){
         for(let f of funcs){
-            f(`[${this.name}] ${msg}`);
+            f(`${new Date()} [${this.name}] ${msg}`);
         }
     }
 }
