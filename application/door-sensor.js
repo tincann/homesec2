@@ -33,8 +33,10 @@ class DoorSensor extends EventEmitter {
         if(this.timeout) { return; }
         
         this.timeout = setTimeout(() => {
+            this.timeout = null;
             var state = this.sensor.digitalRead();
             if(state === this.state) { return; }
+            this.state = state;
             
             if(state == 1){
                 log.write('Opened');
@@ -42,9 +44,7 @@ class DoorSensor extends EventEmitter {
             }else{
                 log.write('Closed');
                 this.emit('close');
-            }
-            this.state = state;
-            this.timeout = null;
+            }                        
         }, 500);
     }
 }
