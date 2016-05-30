@@ -13,6 +13,8 @@ if(process.env.NODE_ENV !== 'development'){
             }
             
             on(){}
+            
+            digitalRead(){}
         };
 }
 
@@ -39,10 +41,10 @@ class DoorSensor extends EventEmitter {
             this.state = state;
             
             if(state == 1){
-                log.write('Opened');
+                log.write('Opened', true);
                 this.emit('open');
             }else{
-                log.write('Closed');
+                log.write('Closed', true);
                 this.emit('close');
             }                        
         }, 500);

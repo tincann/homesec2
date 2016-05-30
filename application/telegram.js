@@ -22,12 +22,11 @@ class Telegram extends EventEmitter {
         });
     }
        
-    log(msg){
-        // for(let chatId of this.chats){
-        //     this.t.sendMessage(chatId, msg);
-        // }
+    log(msg, chatId){
+        //override chatid?
+        chatId = chatId || this.chatId;
         
-        this.t.sendMessage(this.chatId, msg);
+        this.t.sendMessage(chatId, msg);
     }
     
     registerEvents(){        

@@ -12,7 +12,7 @@ if(process.env.NODE_ENV !== 'development'){
             }
             
             servoWrite(pulseWidth) {
-                log.write(`##debug: pin: ${this.pin} pw: ${pulseWidth}`);
+                log.write(`##debug: pin: ${this.pin} pw: ${pulseWidth}`, true);
             }
         };
 }
@@ -26,12 +26,12 @@ class AutoLock {
     }   
    
     Lock(){
-        log.write('Locking');
+        log.write('Locking', true);
         this.motor.servoWrite(RIGHT);        
     }
     
     Unlock(){
-        log.write('Unlocking');
+        log.write('Unlocking', true);
         this.motor.servoWrite(LEFT);        
     }
 }
