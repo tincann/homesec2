@@ -25,8 +25,7 @@ class Telegram extends EventEmitter {
     log(msg, chatId){
         //override chatid?
         chatId = chatId || this.chatId;
-        
-        this.t.sendMessage(chatId, msg);
+        this.t.sendMessage(chatId, `<pre>${msg}</pre>`, { parse_mode: 'HTML'});
     }
     
     registerEvents(){        
