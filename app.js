@@ -21,7 +21,7 @@ const log = logger.create('APP');
 logger.addListener(console.log, true);
 logger.addListener(tg.log.bind(tg), false);
 if(process.env.DEBUG_LISTENER_CHATID){
-    logger.addDebugListener((msg) => { tg.log(msg, process.env.DEBUG_LISTENER_CHATID);});
+    logger.addCollector((msg) => { tg.log(msg, process.env.DEBUG_LISTENER_CHATID);});
 }
 
 //start
