@@ -15,7 +15,7 @@ class LockDriver {
         this.armed = false;
         
         this.lockTimeout = null;
-        this.lockState = LOCK_STATE.UNLOCKED;
+        this.state = LOCK_STATE.UNLOCKED;
     }
     
     Lock(){
