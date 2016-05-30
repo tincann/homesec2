@@ -28,7 +28,7 @@ class Logger{
         }
         
         //collect logs for a duration and then send them in a batch
-        this.collectBuffer += `${datePrefix}\n${logLine}\n`;
+        this.collectBuffer += `${datePrefix}\n ${logLine}\n`;
         
         if(this.collectTimeout){
             return;   
