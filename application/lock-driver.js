@@ -1,4 +1,10 @@
 const log = require('./logger.js').create('LOCK DRIVER');
+const LockState = require('./lock-state.js');
+
+const LOCK_STATE = {
+    UNLOCKED: new LockState('UNLOCKED'),
+    LOCKED: new LockState('LOCKED')
+};
 
 class LockDriver {
     constructor(lock, sensor){
@@ -9,18 +15,21 @@ class LockDriver {
         this.armed = false;
         
         this.lockTimeout = null;
+        this.lockState = LOCK_STATE.UNLOCKED;
     }
     
     Lock(){
         this.lock.Lock();
+        this.state = LOCK_STATE.LOCKED;
         log.write('Locked');
         if(this.armed){
-            this.Disarm();
+            this.Disarm(false);
         }
     }
     
     Unlock(){
         this.lock.Unlock();
+        this.state = LOCK_STATE.UNLOCKED;
         log.write('Unlocked');
     }
     
@@ -30,9 +39,12 @@ class LockDriver {
         log.write('Armed');
     }
     
-    Disarm(){
+    Disarm(sendLog = true){
         this.armed = false;
-        log.write('Disarmed');
+        
+        if(sendLog){
+            log.write('Disarmed');
+        }
     }
     
     onDoorClose(){
@@ -44,6 +56,10 @@ class LockDriver {
     }
     
     onDoorOpen(){
+        //lock was manually opened
+        if(this.state === LOCK_STATE.LOCKED){
+            log.write('INTRUDER ALERT');
+        }
         clearTimeout(this.lockTimeout);
     }
 }
