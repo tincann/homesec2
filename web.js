@@ -16,7 +16,7 @@ const server = http.createServer((req, res) => {
     });
 });
 
-const host = process.env.WEB_HOST || 'localhost';
+const host = process.env.WEB_HOST || '127.0.0.1';
 const port = process.env.WEB_PORT || 3000;
 server.listen(port, host, () => {
     
