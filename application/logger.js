@@ -1,10 +1,10 @@
 const subscriptions = [];
 const debugSubscriptions = [];
+const collectBuffer = "";
 
 class Logger{        
     constructor(name){
         this.name = name;
-        this.collectBuffer = "";
         this.collectTimeout = null;
         this.collectTimeoutDuration = process.env.COLLECT_TIMEOUT || 5000; //in ms
     }
@@ -28,15 +28,15 @@ class Logger{
         }
         
         //collect logs for a duration and then send them in a batch
-        this.collectBuffer += `${datePrefix}\n ${logLine}\n`;
+        collectBuffer += `${datePrefix}\n ${logLine}\n`;
         
         if(this.collectTimeout){
             return;   
         }
         this.collectTimeout = setTimeout(() => {
             for(let f of debugSubscriptions){
-                f(this.collectBuffer);
-                this.collectBuffer = "";
+                f(collectBuffer);
+                collectBuffer = "";
                 this.collectTimeout = null;
             }
         }, this.collectTimeoutDuration);
