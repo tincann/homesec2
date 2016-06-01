@@ -35,12 +35,15 @@ tg.registerCommand('disarm', lockDriver.Disarm.bind(lockDriver));
 tg.registerCommand('lock', lockDriver.Lock.bind(lockDriver));
 tg.registerCommand('unlock', lockDriver.Unlock.bind(lockDriver));
 
+const cmdMap = {
+    'l': lockDriver.Lock,
+    'u': lockDriver.Unlock,
+    'o': lockDriver.onDoorOpen,
+    'c': lockDriver.onDoorClose
+};
 rl.on('line', msg => {
-    if(msg === 'l'){
-        lockDriver.Lock();
-    }else if (msg === 'u'){
-        lockDriver.Unlock();
-    }
+    const f = cmdMap[msg];
+    f && f.call(lockDriver);
 });
 
 //start telegram polling

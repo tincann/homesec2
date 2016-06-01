@@ -1,5 +1,7 @@
 const log = require('./logger.js').create('LOCK DRIVER');
 const LockState = require('./lock-state.js');
+const Stats = require('./stats.js');
+const stats = new Stats('./data/door_stats.txt');
 
 const LOCK_STATE = {
     UNLOCKED: new LockState('UNLOCKED'),
@@ -22,6 +24,7 @@ class LockDriver {
         this.lock.Lock();
         this.state = LOCK_STATE.LOCKED;
         log.write('Locked');
+        stats.write('locked');
         if(this.armed){
             this.Disarm(false);
         }
@@ -31,6 +34,7 @@ class LockDriver {
         this.lock.Unlock();
         this.state = LOCK_STATE.UNLOCKED;
         log.write('Unlocked');
+        stats.write('unlocked');
     }
     
     //auto lock when door is closed
@@ -53,6 +57,7 @@ class LockDriver {
                 this.Lock();
             }, 3000);
         }
+        stats.write('closed');
     }
     
     onDoorOpen(){
@@ -61,6 +66,7 @@ class LockDriver {
             log.write('INTRUDER ALERT');
         }
         clearTimeout(this.lockTimeout);
+        stats.write('opened');
     }
 }
 

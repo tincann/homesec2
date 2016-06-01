@@ -1,6 +1,7 @@
 const subscriptions = [];
 const debugSubscriptions = [];
-const collectBuffer = "";
+
+var collectBuffer = "";
 
 class Logger{        
     constructor(name){
