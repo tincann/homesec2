@@ -21,6 +21,12 @@ class Stats {
         });
     }
     
+    collect(cb){
+        fs.readFile(this.path, (err, data) => {
+            cb(err, data);
+        });
+    }
+    
     static format(date, name, value = ""){
         return `${date}|${name}=${value}\n`;
     }

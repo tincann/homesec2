@@ -1,7 +1,7 @@
 const log = require('./logger.js').create('LOCK DRIVER');
 const LockState = require('./lock-state.js');
 const Stats = require('./stats.js');
-const stats = new Stats('./data/door_stats.txt');
+const stats = new Stats(process.env.STATS_PATH);
 
 const LOCK_STATE = {
     UNLOCKED: new LockState('UNLOCKED'),
