@@ -7,6 +7,7 @@ const AutoLock = require('./application/auto-lock.js');
 const DoorSensor = require('./application/door-sensor.js');
 const LockDriver = require('./application/lock-driver.js');
 const Telegram = require('./application/telegram.js');
+const TextToSpeech = require('./application/tts.js');
 
 const rl = require('readline').createInterface({
   input: process.stdin,
@@ -27,7 +28,12 @@ if(process.env.DEBUG_LISTENER_CHATID){
 //start
 const lock = new AutoLock(process.env.LOCK_GPIOPIN);
 const sensor = new DoorSensor(process.env.SENSOR_GPIOPIN);
-const lockDriver = new LockDriver(lock, sensor);
+const tts = new TextToSpeech(
+    process.env.SONOS_ENDPOINT_HOST,
+    process.env.SONOS_ENDPOINT_PORT, 
+    process.env.SONOS_ENDPOINT_USER, 
+    process.env.SONOS_ENDPOINT_PASS);
+const lockDriver = new LockDriver(lock, sensor, tts);
 
 //register commands
 tg.registerCommand('arm', lockDriver.Arm.bind(lockDriver));

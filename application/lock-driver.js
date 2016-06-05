@@ -9,9 +9,11 @@ const LOCK_STATE = {
 };
 
 class LockDriver {
-    constructor(lock, sensor){
+    constructor(lock, sensor, tts){
         this.lock = lock;
         this.sensor = sensor;
+        this.tts = tts;
+        
         this.sensor.on('close', this.onDoorClose.bind(this));
         this.sensor.on('open', this.onDoorOpen.bind(this));
         this.armed = false;
@@ -25,6 +27,7 @@ class LockDriver {
         this.state = LOCK_STATE.LOCKED;
         log.write('Locked');
         stats.write('locked');
+        this.tts.sayAll('Door is locked');
         if(this.armed){
             this.Disarm(false);
         }
@@ -35,20 +38,22 @@ class LockDriver {
         this.state = LOCK_STATE.UNLOCKED;
         log.write('Unlocked');
         stats.write('unlocked');
+        this.tts.sayAll('Door is unlocked');
     }
     
     //auto lock when door is closed
     Arm(){
         this.armed = true;
         log.write('Armed');
+        this.tts.sayAll('Door is armed');
     }
     
     Disarm(sendLog = true){
         this.armed = false;
-        
         if(sendLog){
             log.write('Disarmed');
         }
+        this.tts.sayAll('Door is disarmed');
     }
     
     onDoorClose(){
@@ -67,6 +72,9 @@ class LockDriver {
         }
         clearTimeout(this.lockTimeout);
         stats.write('opened');
+        if(this.armed){
+            this.tts.sayAll('Warning: door is armed');
+        }
     }
 }
 
