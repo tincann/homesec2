@@ -16,9 +16,9 @@ class TextToSpeech {
                 path: '/sayall/' + encodeURIComponent(text), 
                 headers: { 'Authorization': this.auth }
             };
-            http.get(options, (err) => {
-                if(err){
-                    log.write(err);
+            http.get(options, (res) => {
+                if(res.statusCode != 200){
+                    log.write(`${res.statusCode} ${res.statusMessage}`);
                 }
             });
         }else{

@@ -1,3 +1,4 @@
+const util = require('util');
 const subscriptions = [];
 const debugSubscriptions = [];
 
@@ -12,6 +13,7 @@ class Logger{
         
     write(msg, onlyDebug){
         const datePrefix = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
+        msg = typeof msg === 'string' ? msg : util.inspect(msg); 
         const logLine = `[${this.name}] ${msg}`;
         
         if(!onlyDebug){
