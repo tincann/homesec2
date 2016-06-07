@@ -2,6 +2,8 @@
 //load environment variables from .env file
 require('dotenv-safe').load();
 
+require('time')(Date);
+
 //classes
 const AutoLock = require('./application/auto-lock.js');
 const DoorSensor = require('./application/door-sensor.js');
