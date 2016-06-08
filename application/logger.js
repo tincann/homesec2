@@ -6,7 +6,6 @@ var collectBuffer = "";
 
 if(process.env.NODE_ENV === 'development'){
     Date.prototype.setTimezone = () => {};
-    Date.prototype.toLocaleString = () => new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
 }
 
 class Logger{        
@@ -17,8 +16,8 @@ class Logger{
     }
         
     write(msg, onlyDebug){
-	var d = new Date();
-	d.setTimezone('Europe/Amsterdam');
+        var d = new Date();
+        d.setTimezone('Europe/Amsterdam');
         const datePrefix = d.toLocaleString();
         msg = typeof msg === 'string' ? msg : util.inspect(msg); 
         const logLine = `[${this.name}] ${msg}`;

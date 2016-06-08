@@ -20,6 +20,9 @@ class LockDriver {
         
         this.lockTimeout = null;
         this.state = LOCK_STATE.UNLOCKED;
+
+        this.lastOpen = new Date();
+        this.lastClose = new Date();
     }
     
     Lock(){
@@ -55,6 +58,14 @@ class LockDriver {
         }
         this.tts.sayAll('Door is disarmed');
     }
+
+    Status(){
+        var msg = `\n${this.state}\n`;
+        msg += `Armed: ${this.armed}\n`;
+        msg += `LastOpen: ${this.lastOpen.toLocaleString()}\n`;
+        msg += `LastClose: ${this.lastClose.toLocaleString()}`;
+        log.write(msg);
+    }
     
     onDoorClose(){
         if(this.armed){
@@ -63,6 +74,7 @@ class LockDriver {
             }, 3000);
         }
         stats.write('closed');
+        this.lastClose = new Date();
     }
     
     onDoorOpen(){
@@ -75,6 +87,7 @@ class LockDriver {
         if(this.armed){
             this.tts.sayAll('Warning: door is armed');
         }
+        this.lastOpen = new Date();
     }
 }
 

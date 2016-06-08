@@ -45,12 +45,14 @@ tg.registerCommand('arm', lockDriver.Arm.bind(lockDriver));
 tg.registerCommand('disarm', lockDriver.Disarm.bind(lockDriver));
 tg.registerCommand('lock', lockDriver.Lock.bind(lockDriver));
 tg.registerCommand('unlock', lockDriver.Unlock.bind(lockDriver));
+tg.registerCommand('status', lockDriver.Status.bind(lockDriver));
 
 const cmdMap = {
     'l': lockDriver.Lock,
     'u': lockDriver.Unlock,
     'o': lockDriver.onDoorOpen,
-    'c': lockDriver.onDoorClose
+    'c': lockDriver.onDoorClose,
+    's': lockDriver.Status
 };
 rl.on('line', msg => {
     const f = cmdMap[msg];
