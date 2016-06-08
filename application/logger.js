@@ -4,6 +4,11 @@ const debugSubscriptions = [];
 
 var collectBuffer = "";
 
+if(process.env.NODE_ENV === 'development'){
+    Date.prototype.setTimezone = () => {};
+    Date.prototype.toLocaleString = () => new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
+}
+
 class Logger{        
     constructor(name){
         this.name = name;

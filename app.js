@@ -2,7 +2,10 @@
 //load environment variables from .env file
 require('dotenv-safe').load();
 
-require('time')(Date);
+//somehow only works in production
+if(process.env.NODE_ENV !== 'development'){
+    require('time')(Date);
+}
 
 //classes
 const AutoLock = require('./application/auto-lock.js');
