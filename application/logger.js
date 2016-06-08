@@ -14,9 +14,7 @@ class Logger{
     write(msg, onlyDebug){
 	var d = new Date();
 	d.setTimezone('Europe/Amsterdam');
-	console.log(d.getTimezone());
-	console.log(d.toLocaleString());
-        const datePrefix = d.toLocaleString().replace(/T/, ' ').replace(/\..+/, '');
+        const datePrefix = d.toLocaleString();
         msg = typeof msg === 'string' ? msg : util.inspect(msg); 
         const logLine = `[${this.name}] ${msg}`;
         
