@@ -41,10 +41,10 @@ const tts = new TextToSpeech(
 const lockDriver = new LockDriver(lock, sensor, tts);
 
 //register commands
-tg.registerCommand('arm', lockDriver.Arm.bind(lockDriver));
-tg.registerCommand('disarm', lockDriver.Disarm.bind(lockDriver));
 tg.registerCommand('lock', lockDriver.Lock.bind(lockDriver));
 tg.registerCommand('unlock', lockDriver.Unlock.bind(lockDriver));
+tg.registerCommand('arm', lockDriver.Arm.bind(lockDriver));
+tg.registerCommand('disarm', lockDriver.Disarm.bind(lockDriver));
 tg.registerCommand('status', lockDriver.Status.bind(lockDriver));
 
 const cmdMap = {
