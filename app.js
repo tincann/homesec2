@@ -59,7 +59,26 @@ rl.on('line', msg => {
     f && f.call(lockDriver);
 });
 
+//create http endpoints
+const restify = require('restify');
+var server = restify.createServer();
+server.post('/arm', (req, res, next) => { lockDriver.Arm(); return next(); });
+server.post('/disarm', (req, res, next) => { lockDriver.Disarm(); return next(); });
+server.get('/lock', (req, res, next) => { lockDriver.Lock(); return next(); });
+server.get('/unlock', (req, res, next) => { lockDriver.Unlock(); return next(); });
+server.get('/status', (req, res, next) => { 
+    var status = lockDriver.Status();
+    res.send(status);
+    return next();
+ });
+
+
 //start telegram polling
 tg.start();
 
 log.write('Homesec started');
+
+const port = process.env.WEB_INTERFACE_PORT || 8000;
+server.listen(port, () => {
+    console.log(`Web interface listening on http://localhost:${port}`);
+});

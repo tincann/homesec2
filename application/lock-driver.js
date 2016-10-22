@@ -65,6 +65,7 @@ class LockDriver {
         msg += `LastOpen: ${this.lastOpen.toLocaleString()}\n`;
         msg += `LastClose: ${this.lastClose.toLocaleString()}`;
         log.write(msg);
+        return msg;
     }
     
     onDoorClose(){
