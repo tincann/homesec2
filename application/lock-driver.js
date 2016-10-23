@@ -68,12 +68,14 @@ class LockDriver {
     }
 
     Status(){
-        var msg = `\n${this.state}\n`;
-        msg += `Armed: ${this.armed}\n`;
-        msg += `LastOpen: ${this.lastOpen.toLocaleString()}\n`;
-        msg += `LastClose: ${this.lastClose.toLocaleString()}`;
-        log.write(msg);
-        return msg;
+        var status = {
+            state: this.state,
+            armed: this.armed,
+            lastOpen: this.lastOpen.toLocaleDateString(),
+            lastClose: this.lastClose.toLocaleDateString()
+        };
+        log.write(JSON.stringify(status));
+        return status;
     }
     
     onDoorClose(){
