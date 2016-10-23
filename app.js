@@ -40,47 +40,48 @@ const tts = new TextToSpeech(
     process.env.SONOS_ENDPOINT_PASS);
 const lockDriver = new LockDriver(lock, sensor, tts);
 
+
 //register commands
-tg.registerCommand('arm', lockDriver.Arm.bind(lockDriver));
-tg.registerCommand('disarm', lockDriver.Disarm.bind(lockDriver));
-tg.registerCommand('lock', lockDriver.Lock.bind(lockDriver));
-tg.registerCommand('unlock', lockDriver.Unlock.bind(lockDriver));
-tg.registerCommand('status', lockDriver.Status.bind(lockDriver));
+const commands = {
+    'arm': lockDriver.Arm,
+    'disarm': lockDriver.Disarm,
+    'lock': lockDriver.Lock,
+    'unlock': lockDriver.Unlock,
+    'toggle': lockDriver.Toggle,
+    'status': lockDriver.Status
+}
 
-const cmdMap = {
-    'l': lockDriver.Lock,
-    'u': lockDriver.Unlock,
-    'o': lockDriver.onDoorOpen,
-    'c': lockDriver.onDoorClose,
-    's': lockDriver.Status,
-    't': lockDriver.Toggle
-};
-rl.on('line', msg => {
-    const f = cmdMap[msg];
-    f && f.call(lockDriver);
-});
-
-//create http endpoints
 const restify = require('restify');
 var server = restify.createServer();
-server.post('/arm', (req, res, next) => { lockDriver.Arm(); return next(); });
-server.post('/disarm', (req, res, next) => { lockDriver.Disarm(); return next(); });
-server.get('/lock', (req, res, next) => { lockDriver.Lock(); return next(); });
-server.get('/unlock', (req, res, next) => { lockDriver.Unlock(); return next(); });
-server.get('/toggle', (req, res, next) => { lockDriver.Toggle(); return next(); });
-server.get('/status', (req, res, next) => { 
-    var status = lockDriver.Status();
-    res.send(status);
-    return next();
- });
 
+Object.keys(commands).forEach(cmd => {
+    var func = commands[cmd];
+
+    //register telegram commands
+    tg.registerCommand(cmd, func.bind(lockDriver));
+
+    //register rest command
+    server.get(`/${cmd}`, (req, res, next) => {
+        log.write(req);
+        var result = func.call(lockDriver);
+        res.send(result || 200);
+        return next();
+    });
+})
+
+//register terminal commands
+rl.on('line', msg => {
+    const f = commands[msg];
+    f && f.call(lockDriver);
+});
 
 //start telegram polling
 tg.start();
 
-log.write('Homesec started');
-
+//start http server
 const port = process.env.WEB_INTERFACE_PORT || 8000;
 server.listen(port, () => {
     console.log(`Web interface listening on http://localhost:${port}`);
 });
+
+log.write('Homesec started');
