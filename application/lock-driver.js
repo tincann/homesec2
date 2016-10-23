@@ -43,6 +43,14 @@ class LockDriver {
         stats.write('unlocked');
         this.tts.sayAll('Door is unlocked');
     }
+
+    Toggle(){
+        if(this.state == LOCK_STATE.LOCKED){
+            this.Unlock();
+        }else{
+            this.Lock();
+        }
+    }
     
     //auto lock when door is closed
     Arm(){

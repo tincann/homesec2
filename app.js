@@ -52,7 +52,8 @@ const cmdMap = {
     'u': lockDriver.Unlock,
     'o': lockDriver.onDoorOpen,
     'c': lockDriver.onDoorClose,
-    's': lockDriver.Status
+    's': lockDriver.Status,
+    't': lockDriver.Toggle
 };
 rl.on('line', msg => {
     const f = cmdMap[msg];
@@ -66,6 +67,7 @@ server.post('/arm', (req, res, next) => { lockDriver.Arm(); return next(); });
 server.post('/disarm', (req, res, next) => { lockDriver.Disarm(); return next(); });
 server.get('/lock', (req, res, next) => { lockDriver.Lock(); return next(); });
 server.get('/unlock', (req, res, next) => { lockDriver.Unlock(); return next(); });
+server.get('/toggle', (req, res, next) => { lockDriver.Toggle(); return next(); });
 server.get('/status', (req, res, next) => { 
     var status = lockDriver.Status();
     res.send(status);
