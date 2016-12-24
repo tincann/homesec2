@@ -13,6 +13,7 @@ const DoorSensor = require('./application/door-sensor.js');
 const LockDriver = require('./application/lock-driver.js');
 const Telegram = require('./application/telegram.js');
 const TextToSpeech = require('./application/tts.js');
+const WebInterface = require('./application/web-interface');
 
 const rl = require('readline').createInterface({
   input: process.stdin,
@@ -51,8 +52,7 @@ const commands = {
     'status': lockDriver.Status
 }
 
-const restify = require('restify');
-var server = restify.createServer();
+const server = new WebInterface();
 
 Object.keys(commands).forEach(cmd => {
     var func = commands[cmd];
@@ -60,13 +60,9 @@ Object.keys(commands).forEach(cmd => {
     //register telegram commands
     tg.registerCommand(cmd, func.bind(lockDriver));
 
-    //register rest command
-    server.get(`/${cmd}`, (req, res, next) => {
-        log.write(req);
-        var result = func.call(lockDriver);
-        res.send(result || 200);
-        return next();
-    });
+    
+    //register rest api command
+    server.registerCommand(cmd, func.bind(lockDriver));
 })
 
 //register terminal commands
@@ -78,10 +74,7 @@ rl.on('line', msg => {
 //start telegram polling
 tg.start();
 
-//start http server
-const port = process.env.WEB_INTERFACE_PORT || 8000;
-server.listen(port, () => {
-    console.log(`Web interface listening on http://localhost:${port}`);
-});
+//start rest api
+server.listen(process.env.WEB_INTERFACE_PORT || 8000);
 
 log.write('Homesec started');
