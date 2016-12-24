@@ -28,43 +28,43 @@ class LockDriver {
     Lock(){
         this.lock.Lock();
         this.state = LOCK_STATE.LOCKED;
-        log.write('Locked');
         stats.write('locked');
         this.tts.sayAll('Door is locked');
         if(this.armed){
             this.Disarm(false);
         }
+        return 'Locked';
     }
     
     Unlock(){
         this.lock.Unlock();
         this.state = LOCK_STATE.UNLOCKED;
-        log.write('Unlocked');
         stats.write('unlocked');
         this.tts.sayAll('Door is unlocked');
+        return 'Unlocked';
     }
 
     Toggle(){
         if(this.state == LOCK_STATE.LOCKED){
-            this.Unlock();
+            return this.Unlock();
         }else{
-            this.Lock();
+            return this.Lock();
         }
     }
     
     //auto lock when door is closed
     Arm(){
         this.armed = true;
-        log.write('Armed');
         this.tts.sayAll('Door is armed');
+        return 'Armed';
     }
     
     Disarm(sendLog = true){
         this.armed = false;
-        if(sendLog){
-            log.write('Disarmed');
-        }
         this.tts.sayAll('Door is disarmed');
+        if(sendLog){
+            return 'Disarmed';
+        }
     }
 
     Status(){
@@ -74,7 +74,6 @@ class LockDriver {
             lastOpen: this.lastOpen.toLocaleDateString(),
             lastClose: this.lastClose.toLocaleDateString()
         };
-        log.write(JSON.stringify(status));
         return status;
     }
     

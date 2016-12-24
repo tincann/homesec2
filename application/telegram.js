@@ -14,10 +14,14 @@ class Telegram extends EventEmitter {
     }
     
     registerCommand(cmd, func){
+        const self = this;
         const chatId = this.chatId;
         this.t.hears(`/${cmd}`, function * (){ 
             if(this.chat && this.chat.id == chatId){
-                func();
+                var response = func();
+                if(response){
+                    self.log(JSON.stringify(response));
+                }
             }
         });
     }
