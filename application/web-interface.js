@@ -16,7 +16,9 @@ class WebInterface {
                 req.url, true);
             var result = func();
             res.send(result || 200);
-            log.write(result);
+            if(cmd != 'status'){
+                log.write(result);
+            }
             return next();
         });
     }
