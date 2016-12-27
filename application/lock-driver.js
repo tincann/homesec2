@@ -71,6 +71,7 @@ class LockDriver {
         var status = {
             state: this.state.toString(),
             armed: this.armed,
+            doorOpen: this.sensor.state,
             lastOpen: this.lastOpen.toLocaleDateString(),
             lastClose: this.lastClose.toLocaleDateString()
         };
