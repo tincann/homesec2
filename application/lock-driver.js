@@ -33,7 +33,7 @@ class LockDriver {
         if(this.armed){
             this.Disarm(false);
         }
-        return 'Locked';
+        return this.Respond('Locked');
     }
     
     Unlock(){
@@ -41,7 +41,7 @@ class LockDriver {
         this.state = LOCK_STATE.UNLOCKED;
         stats.write('unlocked');
         this.tts.sayAll('Door is unlocked');
-        return 'Unlocked';
+        return this.Respond('Unlocked');
     }
 
     Toggle(){
@@ -56,20 +56,20 @@ class LockDriver {
     Arm(){
         this.armed = true;
         this.tts.sayAll('Door is armed');
-        return 'Armed';
+        return this.Respond('Armed');
     }
     
     Disarm(sendLog = true){
         this.armed = false;
         this.tts.sayAll('Door is disarmed');
         if(sendLog){
-            return 'Disarmed';
+            return this.Response('Disarmed');
         }
     }
 
     Status(){
         var status = {
-            state: this.state,
+            state: this.state.toString(),
             armed: this.armed,
             lastOpen: this.lastOpen.toLocaleDateString(),
             lastClose: this.lastClose.toLocaleDateString()
@@ -98,6 +98,10 @@ class LockDriver {
             this.tts.sayAll('Warning: door is armed');
         }
         this.lastOpen = new Date();
+    }
+
+    Respond(message){
+        return { message: message, status: this.Status() };
     }
 }
 
