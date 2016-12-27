@@ -1,8 +1,7 @@
 const EventEmitter = require('events').EventEmitter;
 const Telegraf = require('telegraf');
 
-const logger = require('./logger.js');
-const log = logger.create('TG');
+const log = require('./logger.js').create('TG');
 
 class Telegram extends EventEmitter {
     constructor(token, chatId){

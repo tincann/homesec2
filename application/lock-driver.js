@@ -1,11 +1,15 @@
 const log = require('./logger.js').create('LOCK DRIVER');
-const LockState = require('./lock-state.js');
 const Stats = require('./stats.js');
 const stats = new Stats(process.env.STATS_PATH);
 
 const LOCK_STATE = {
-    UNLOCKED: new LockState('UNLOCKED'),
-    LOCKED: new LockState('LOCKED')
+    UNLOCKED: 'LOCK_STATE.UNLOCKED',
+    LOCKED: 'LOCK_STATE.LOCKED'
+};
+
+const DOOR_STATE = {
+    OPEN: 'DOOR_STATE.OPEN',
+    CLOSED: 'DOOR_STATE.CLOSED'
 };
 
 class LockDriver {
@@ -71,9 +75,9 @@ class LockDriver {
         var status = {
             state: this.state.toString(),
             armed: this.armed,
-            doorOpen: this.sensor.state === 1,
-            lastOpen: this.lastOpen.toLocaleDateString(),
-            lastClose: this.lastClose.toLocaleDateString()
+            doorState: this.sensor.state ? DOOR_STATE.OPEN : DOOR_STATE.CLOSED,
+            lastOpen: this.lastOpen,
+            lastClose: this.lastClose
         };
         return status;
     }
