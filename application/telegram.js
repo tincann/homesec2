@@ -23,7 +23,7 @@ class Telegram extends EventEmitter {
             if(this.chat && this.chat.id == chatId){
                 var response = func();
                 if(response){
-                    log.write(response);
+                    log.write(response.message);
                 }
             }
         });

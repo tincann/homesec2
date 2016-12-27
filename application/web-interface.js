@@ -17,7 +17,7 @@ class WebInterface {
             var result = func();
             res.send(result || 200);
             if(cmd != 'status'){
-                log.write(result);
+                log.write(result.message);
             }
             return next();
         });
