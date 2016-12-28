@@ -72,14 +72,7 @@ class LockDriver {
     }
 
     Status(){
-        var status = {
-            state: this.state.toString(),
-            armed: this.armed,
-            doorState: this.sensor.state ? DOOR_STATE.OPEN : DOOR_STATE.CLOSED,
-            lastOpen: this.lastOpen,
-            lastClose: this.lastClose
-        };
-        return status;
+        return this.Respond('');
     }
     
     onDoorClose(){
@@ -104,9 +97,21 @@ class LockDriver {
         }
         this.lastOpen = new Date();
     }
+    
 
     Respond(message){
-        return { message: message, status: this.Status() };
+        return { message: message, status: this.createStatus() };
+    }
+
+    createStatus(){
+        var status = {
+            state: this.state.toString(),
+            armed: this.armed,
+            doorState: this.sensor.state ? DOOR_STATE.OPEN : DOOR_STATE.CLOSED,
+            lastOpen: this.lastOpen,
+            lastClose: this.lastClose
+        };
+        return status;
     }
 }
 
