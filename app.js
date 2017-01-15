@@ -20,7 +20,7 @@ const rl = require('readline').createInterface({
   output: process.stdout
 });
 
-const tg = new Telegram(process.env.BOT_TOKEN, process.env.CHAT_ID);
+const tg = new Telegram(process.env.BOT_TOKEN, process.env.CHAT_ID, process.env.BOT_USERNAME);
 
 //add loggers
 const logger = require('./application/logger.js');
@@ -49,8 +49,8 @@ const commands = {
     'lock': lockDriver.Lock,
     'unlock': lockDriver.Unlock,
     'toggle': lockDriver.Toggle,
-    'status': lockDriver.Status
-}
+    'status': lockDriver.Status,
+};
 
 const server = new WebInterface();
 
@@ -64,6 +64,9 @@ Object.keys(commands).forEach(cmd => {
     //register rest api command
     server.registerCommand(cmd, func.bind(lockDriver));
 })
+
+//say command
+tg.registerCommand(/\/say (.+)/, tts.sayAll.bind(tts));
 
 //register terminal commands
 rl.on('line', msg => {
