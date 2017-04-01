@@ -4,13 +4,14 @@ const Telegraf = require('telegraf');
 const log = require('./logger.js').create('TG');
 
 class Telegram extends EventEmitter {
-    constructor(token, chatId, botUserName){
-        if(!botUserName){
+    constructor(token, chatId, botUsername){
+        if(!botUsername){
             throw new Error("Bot username missing");
         }
         super();
         this.chatId = chatId;
-        this.t = new Telegraf(token, { username: botUserName });
+        this.botUsername = botUsername;
+        this.t = new Telegraf(token);
         this.registerEvents();
     }
     
@@ -21,9 +22,11 @@ class Telegram extends EventEmitter {
     registerCommand(cmd, func){
         const chatId = this.chatId;
         
-        let match = '/' + cmd;
+        //if string
+        let match = '/' + cmd + '@' + this.botUsername;
         const isStringCommand = typeof(cmd) === 'string';
-        if (!isStringCommand){ //can also be regex
+        
+        if (!isStringCommand){ //if regex
             match = cmd;
         }
         
@@ -53,7 +56,7 @@ class Telegram extends EventEmitter {
         const chatId = this.chatId;
         // this.t.on('text', ctx => {
         //    if(ctx.chat && ctx.chat.id == chatId){
-        //         console.log(ctx.chat);
+        //         console.log(ctx);
         //     }           
         // });
     }
