@@ -55,7 +55,7 @@ const commands = {
 const server = new WebInterface();
 
 Object.keys(commands).forEach(cmd => {
-    var func = commands[cmd];
+    var func = commands[cmd];   
 
     //register telegram commands
     tg.registerCommand(cmd, func.bind(lockDriver));

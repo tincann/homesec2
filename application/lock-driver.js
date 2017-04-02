@@ -35,7 +35,7 @@ class LockDriver {
         stats.write('locked');
         this.tts.sayAll('Door is locked');
         if(this.armed){
-            this.Disarm(false);
+            this.Disarm();
         }
         return this.Respond('Locked');
     }
@@ -63,12 +63,10 @@ class LockDriver {
         return this.Respond('Armed');
     }
     
-    Disarm(sendLog = true){
+    Disarm(){
         this.armed = false;
         this.tts.sayAll('Door is disarmed');
-        if(sendLog){
-            return this.Response('Disarmed');
-        }
+        return this.Response('Disarmed');
     }
 
     Status(){
